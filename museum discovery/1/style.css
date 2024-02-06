@@ -1,0 +1,27 @@
+body {
+    background-color: black;
+    cursor: none !important; /* 使用 !important 以确保覆盖其他可能存在的样式 */
+}
+
+.custom-cursor {
+    width: 260px;  
+    height: 184px; 
+    background-image: url('custom-cursor.png'); 
+    cursor: none; 
+    position: absolute;
+    pointer-events: none; 
+}
+
+span {
+    user-select: none;
+    cursor: none !important; /* 禁用光标 */
+    font-size: 20px;
+    color: blanchedalmond;
+    position: absolute;
+    transition: 1s;
+}
+.ginger{
+    width: auto;
+    height: auto;
+    text-align: center;
+}
