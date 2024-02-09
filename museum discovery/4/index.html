@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Museum Discovery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header><h1>Museum Discovery</h1></header>
+    <div class="Vase"><img src="vase.png" alt=""></div>
+    <div class="all">
+        <a href="../1/"><img src="1.png" alt=""></a>
+        <a href="../2/"><img src="2.png" alt=""></a>
+        <a href="../3/"><img src="3.png" alt=""></a>
+        <a href="../4/"><img src="4.png" alt=""></a>
+        <a href="../5/"><img src="5.png" alt=""></a>
+    </div>
+    <div class="custom-cursor"></div>
+    <script>
+        // 设置随机出现的文字数组
+        var arr = ["A vase from China that is glazed and has a light cyan color.", 
+        "The pattern on the vase is not painted, it is 3D.", 
+        "There are auspicious clouds on the body of the vase, representing good luck.", 
+        "This vase is supposed to be for the royal family because the dragon on the vessel is representing the emperor in ancient China.",];
+        
+        var customCursor = document.querySelector('.custom-cursor');
+
+        // 记录鼠标是否按下的状态
+        var isMouseDown = false;
+
+        document.onmousemove = function (e) {
+            var x = e.clientX;
+            var y = e.clientY;
+            
+            customCursor.style.left = x + "px";
+            customCursor.style.top = y + "px";
+        }
+
+        document.onmousedown = function () {
+            // 鼠标按下时切换光标图像
+            customCursor.style.backgroundImage = "url('mouth.png')";
+            isMouseDown = true;
+        }
+
+        document.onmouseup = function () {
+            // 鼠标抬起时切换回原始光标图像
+            customCursor.style.backgroundImage = "url('custom-cursor.png')";
+            isMouseDown = false;
+        }
+
+        document.onclick = function (e) {
+            if (!isMouseDown) {
+                // 创建元素节点对象
+                var span = document.createElement("span");
+                span.className = "span"; // 添加类名 "span"
+                // 获取当前鼠标的坐标
+                span.style.left = e.clientX + "px";
+                span.style.top = e.clientY + "px";
+                // 让span的值为arr数组内随机的一个值
+                span.innerHTML = arr[Math.floor(Math.random()*arr.length)];
+                // 设置span的动画效果
+                setTimeout(function(){
+                    span.style.opacity = "1";
+                    span.style.transform = "translateY(-100px)";
+                }, 100);
+                setTimeout(function(){
+                    span.style.opacity = "0";
+                    span.style.transform = "translateY(-230px)";
+                }, 1500);
+                // 清掉opacity为0的span
+                var chi = document.getElementsByClassName("span");
+                for(var i = 0; i < chi.length; i++){
+                    if(chi[i].style.opacity === "0"){
+                        document.body.removeChild(chi[i]);
+                    }
+                }
+                // 将span添加到body里
+                document.body.appendChild(span);
+            }
+        }
+    </script>
+</body>
+</html>
