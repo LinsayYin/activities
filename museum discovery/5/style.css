@@ -21,7 +21,7 @@ header {
     font-size: 3.5em;
     font-family: 'Dokdo', sans-serif;
     position: absolute;
-    top: 60px;
+    top: 30px;
     left: 3em;
 
 }
@@ -59,12 +59,12 @@ span {
 .plate{
     text-align: center;
     padding: 80px;
-    padding-top: 15em;
+    padding-top: 25em;
     padding-left: 30em;
 }
 .write{
     position: absolute;
-    top: 11.5em;
+    top: 10.5em;
     left: 70em;
     
 

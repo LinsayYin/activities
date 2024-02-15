@@ -1,0 +1,8 @@
+body{
+    background-color: black;
+}
+.home{
+    position: absolute;
+    right: 60px;
+    top: 30px;
+}
