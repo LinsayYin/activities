@@ -2,24 +2,38 @@ body {
     background-color: black;
     cursor: none !important; /* 使用 !important 以确保覆盖其他可能存在的样式 */
 }
-.dotgothic16-regular {
-    font-family: "DotGothic16", sans-serif;
+.dokdo-regular {
+    font-family: "Dokdo", system-ui;
     font-weight: 400;
     font-style: normal;
   }
-  
 
 body {
-    font-family: 'DotGothic16', sans-serif;
+    font-family: "Smooch Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
 }
+
 
 header {
     color: aliceblue;
     font-size: 3.5em;
-    font-family: 'DotGothic16', sans-serif;
-    text-align: center;
-}
+    font-family: 'Dokdo', sans-serif;
+    position: absolute;
+    top: 60px;
+    left: 3em;
 
+}
+p{
+    color: aliceblue;
+    font-size: 40px;
+    font-family: Smooch Sans;
+    position: absolute;
+    top: 6em;
+    left: 7em;
+    
+}
 
 
 .custom-cursor {
@@ -34,20 +48,62 @@ header {
 span {
     user-select: none;
     cursor: none !important; /* 禁用光标 */
-    font-size: 20px;
+    font-size: 30px;
     color: blanchedalmond;
     position: absolute;
-    transition: 1s;
+    transition: 5s;
+    font-family: 'Pompiere', sans-serif; /* 指定所需的字体系列 */
+    white-space: pre-line; /* 允许保留换行符并允许文本换行 */
+    word-wrap: break-word; /* 在单词内允许换行 */
+    width: 15em;
 }
 .ginger{
     width: auto;
     height: auto;
     text-align: center;
+    padding: 80px;
+    padding-top: 15em;
 }
-.all{
+.write{
+    position: absolute;
+    top: 11em;
+    left: 33em;
+    
+
+}
+.all {
     display: flex;
     justify-content: space-around;
 }
+
+.all a {
+    margin: -10px; 
+    padding: 20px;
+    margin-top: 3em;
+}
+
+.all a img {
+    display: block;
+    border-radius: 25px;
+    width: 179px;
+    height: 130px;
+}
+
+.all a:last-child img {
+    width: 130px;
+    height: 130px;
+}
+
+.all a:first-child img {
+    width: 159px;
+    height: 130px;
+}
+.home{
+    position: absolute;
+    right: 60px;
+    top: 30px;
+}
+
 
 
 
