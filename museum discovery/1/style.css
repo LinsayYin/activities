@@ -22,7 +22,7 @@ header {
     font-family: 'Dokdo', sans-serif;
     position: absolute;
     top: 60px;
-    left: 3em;
+    left: 4.5em;
 
 }
 p{
@@ -31,7 +31,7 @@ p{
     font-family: Smooch Sans;
     position: absolute;
     top: 6em;
-    left: 7em;
+    left: 8.5em;
     
 }
 
@@ -64,22 +64,16 @@ span {
     padding: 80px;
     padding-top: 15em;
 }
-.write{
-    position: absolute;
-    top: 11em;
-    left: 33em;
-    
 
-}
 .all {
     display: flex;
     justify-content: space-around;
 }
 
 .all a {
-    margin: -10px; 
-    padding: 20px;
-    margin-top: 3em;
+    margin: -20px; 
+    padding: 10px;
+    margin-top: 9em;
 }
 
 .all a img {
@@ -89,15 +83,6 @@ span {
     height: 130px;
 }
 
-.all a:last-child img {
-    width: 130px;
-    height: 130px;
-}
-
-.all a:first-child img {
-    width: 159px;
-    height: 130px;
-}
 .home{
     position: absolute;
     right: 60px;

@@ -21,7 +21,7 @@ header {
     font-family: 'Dokdo', sans-serif;
     position: absolute;
     top: 60px;
-    left: 2em;
+    left: 4em;
 
 }
 p{
@@ -30,7 +30,7 @@ p{
     font-family: Smooch Sans;
     position: absolute;
     top: 6em;
-    left: 7em;
+    left: 10em;
     
 }
 
@@ -62,13 +62,7 @@ span {
     text-align: center;
     padding-left: 35em;
 }
-.write{
-    position: absolute;
-    top: 11em;
-    left: 43em;
-    
 
-}
 .all {
     display: flex;
     justify-content: space-around;
@@ -84,16 +78,6 @@ span {
     display: block;
     border-radius: 25px;
     width: 179px;
-    height: 130px;
-}
-
-.all a:last-child img {
-    width: 130px;
-    height: 130px;
-}
-
-.all a:first-child img {
-    width: 159px;
     height: 130px;
 }
 .home{
