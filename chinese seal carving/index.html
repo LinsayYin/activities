@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+
+<title>Chinese seal carving</title>
+</head>
+<body>
+  <div id="image-container"></div>
+
+  <div class="button-container">
+    <input type="file" id="image-input" accept="image/*" style="display: none;">
+    <label for="image-input" class="custom-file-upload">Custom Choose File</label>
+  </div>
+  <button id="upload-button" onclick="uploadImage()">Upload Image</button>
+  
+  <h1>The Art of Chinese Seal Carving</h1>
+  <p>Seal carving is called Zhuan ke in Chinese, Zhuan being the style of character used for this craft. Since ancient times, seal characters have been used and it has become an exclusively Chinese art form.</p>
+  <p>Gradually, seals came to be more widely used. There were seals with the name of a person, with his signature, seals used for correspondence, for signing calligraphy and paintings, seals with characters expressing luck, seals with pseudonyms, with iterary phrases, collector's seals and so the list goes on.</p>
+  <p>The Seals have long been used as a “signature” in calligraphy and sumi-e painting artworks to tell the author’s name and/or his love in art and nature, ambition, or his belief in Buddism. Light Seal Paste with Gift Box is a red seal paste, the traditional color paste seals are dipped in before being transferred to the artwork by a seal stone.</p>
+  <p>Since that era, soft stone has been widely used in seal cutting. Stones from Qingtian, currently in Zhejiang Province, are called Qingtian stone (青田印石) while those called Shoushan stone (壽山印石) from Fujian Province were also widely used. Some artisans became experts, creating numerous carving styles.</p>
+  <div class="imagine">
+    <img src="image 14.png" alt="">
+    <img src="image 17.png" alt="">
+  </div>
+
+  
+<div class="stamp">
+  <h3>click on the stamp on the right to make your own!</h3>
+  <a href="filter.html"><img src="stamp.png" alt=""></a>
+</div>
+
+
+  <script>
+    window.onload = function() {
+      const images = JSON.parse(localStorage.getItem('uploadedImages')) || [];
+      const container = document.getElementById('image-container');
+
+      images.forEach(imageInfo => {
+        const imageElement = document.createElement('img');
+        imageElement.src = imageInfo.url;
+        imageElement.classList.add('uploaded-image');
+        imageElement.style.left = imageInfo.left + 'px';
+        imageElement.style.top = imageInfo.top + 'px';
+        imageElement.onclick = function() {
+          this.remove();
+          updateLocalStorage();
+        };
+
+        container.appendChild(imageElement);
+      });
+    };
+
+    function getRandomPosition(max) {
+      return Math.floor(Math.random() * max) + 1;
+    }
+
+    function uploadImage() {
+      const input = document.getElementById('image-input');
+      const files = input.files;
+
+      if (files.length === 0) {
+        alert('Please select an image to upload.');
+        return;
+      }
+
+      const file = files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        const imageUrl = event.target.result;
+        const imageBase64 = imageUrl.split(',')[1]; // 获取图片的Base64编码
+
+        const imageElement = document.createElement('img');
+        imageElement.src = imageUrl;
+        imageElement.classList.add('uploaded-image');
+        imageElement.style.left = getRandomPosition(window.innerWidth - 200) + 'px';
+        imageElement.style.top = getRandomPosition(1000) + 'px';
+        imageElement.onclick = function() {
+          this.remove();
+          updateLocalStorage();
+        };
+
+        const container = document.getElementById('image-container');
+        container.appendChild(imageElement);
+
+        const images = JSON.parse(localStorage.getItem('uploadedImages')) || [];
+        images.push({ url: imageUrl, left: parseInt(imageElement.style.left), top: parseInt(imageElement.style.top), base64: imageBase64 });
+        localStorage.setItem('uploadedImages', JSON.stringify(images));
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    function updateLocalStorage() {
+      const images = [];
+      const container = document.getElementById('image-container');
+      const imageElements = container.querySelectorAll('.uploaded-image');
+
+      imageElements.forEach(image => {
+        const imageInfo = {
+          url: image.src,
+          left: parseInt(image.style.left),
+          top: parseInt(image.style.top),
+          base64: image.src.split(',')[1] 
+        };
+        images.push(imageInfo);
+      });
+
+      localStorage.setItem('uploadedImages', JSON.stringify(images));
+    }
+  </script>
+</body>
+</html>

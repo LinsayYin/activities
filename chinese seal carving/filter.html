@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="filter.css">
+<script src="https://at.alicdn.com/t/font_1117393_vsomkydnt4.js"></script>
+<title>customize your own stamp</title>
+
+</head>
+<body>
+  
+  <div id="actions">
+    <svg id="brush" class="icon active">
+        <use xlink:href="#icon-Pencil"></use>
+    </svg>
+  <div id="upload-container">
+    <input type="file" id="image-input" accept="image/png">
+    <button class="upload">Upload Image</button>
+  </div>
+
+  <div id="image-container"></div>
+
+    <h3></h3>
+    <!-- <svg id="eraser" class="icon">
+        <use xlink:href="#icon-eraser"></use>
+    </svg> -->
+</div> 
+
+  <a id="download-button" href="#" download="transparent_image.png">Download Stamp</a>
+
+  <script>
+    const upload = document.querySelector(".upload");
+    const downloadButton = document.getElementById('download-button');
+
+
+    window.addEventListener('DOMContentLoaded', function() {
+      downloadButton.style.display = 'inline-block';
+    });
+    upload.addEventListener("click",uploadImage);
+    function uploadImage() {
+      console.log("imageuploaded");
+      const input = document.getElementById('image-input');
+      const files = input.files;
+      
+
+      if (files.length === 0) {
+        alert('Please select a transparent image to upload (PNG format).');
+        return;
+      }
+
+      const file = files[0];
+      if (file.type !== 'image/png') {
+        alert('Please select a PNG format image.');
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+      
+      reader.onload = function(event) {
+        const imageUrl = event.target.result;
+
+        const imageElement = document.createElement('img');
+       
+       imageElement.onload=function(event){
+        imageElement.classList.add('uploaded-image', 'filtered');
+        
+        const canvas = document.createElement("canvas");
+        canvas.width=imageElement.width;
+        canvas.height=imageElement.height;
+        
+        document.body.appendChild(canvas);
+let stamp=canvas.getBoundingClientRect();         
+const ctx = canvas.getContext("2d");
+ ctx.filter = " brightness(100%) saturate(50%) sepia(100%) hue-rotate(312deg)";
+ ctx.drawImage(imageElement, 0, 0, imageElement.width, imageElement.height);
+ initCanvas(canvas);
+
+document.getElementById("brush").addEventListener("click", () => {
+  switchTool("brush");
+});
+
+// document.getElementById("eraser").addEventListener("click", () => {
+//   switchTool("eraser");
+// });
+
+ctx.canvas.addEventListener("mousedown", startDrawing);
+ctx.canvas.addEventListener("mousemove", draw);
+ctx.canvas.addEventListener("mouseup", stopDrawing);
+ctx.canvas.addEventListener("mouseout", stopDrawing);
+// document.body.addEventListener("mousemove",(event)=>{
+// ctx.beginPath();
+// ctx.arc(event.clientX-stamp.x,event.clientY-stamp.y,5,0,2*Math.PI);
+// ctx.fillStyle="red";
+// ctx.fill();
+// });
+downloadButton.addEventListener("click" , ()=> { downloadButton.href = canvas.toDataURL();
+        downloadButton.download="stamp.png";
+        downloadButton.style.display = 'inline-block';});
+       };
+       
+        imageElement.src = imageUrl;
+
+        const container = document.getElementById('image-container');
+        // container.innerHTML = ''; // Clear previous images
+        container.appendChild(imageElement);
+
+        // Show download button
+        
+      };
+
+    }
+    let ctx;
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    function initCanvas(canvas) {
+      // const canvas = document.createElement("canvas");
+      // canvas.width = 800;
+      // canvas.height = 600;
+      // document.body.appendChild(canvas);
+      ctx = canvas.getContext("2d");
+      ctx.strokeStyle = "#b10505"; // initial color
+      ctx.lineWidth = 5; // initial line width
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      ctx.beginPath();
+      ctx.filter  = "none";
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      
+    });
+    
+  </script>
+</body>
+</html>
