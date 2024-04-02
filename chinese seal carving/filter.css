@@ -6,25 +6,33 @@
 
   #upload-container button {
     padding: 10px 20px;
-    font-size: 16px; 
+    font-size: 20px; 
     color: #ffffff;
     background-color: #c41212;
-    display: inline-block;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none; 
+    outline: none;
     
   }
 
   #image-input::file-selector-button {
-    font-size: 26px;
+    font-size: 20px;
     color: #ffffff;
     background-color: #c41212;
     display: inline-block;
     margin-bottom: 10px;
     padding: 10px 20px; 
+    text-decoration: none;
+    border-radius: 5px;
+    border: none; 
+    outline: none;
   }
   
 
 
   #download-button {
+    font-size: 20px;
     margin-top: 10px;
     display: inline-block;
     padding: 10px 20px;
@@ -39,14 +47,14 @@
     justify-content: center;
     gap: 10px;
   }
-  .uploaded-image {
+  /* .uploaded-image {
     max-width: 200px;
     max-height: 200px;
     object-fit: cover;
     border-radius: 8px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     filter: brightness(100%) saturate(50%) sepia(100%) hue-rotate(312deg);
-  }
+  } */
 
   input[type="file"]{
     color: transparent;
