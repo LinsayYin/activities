@@ -9,17 +9,18 @@
 
 </head>
 <body>
-  
-  <div id="actions">
-    <svg id="brush" class="icon active">
-        <use xlink:href="#icon-Pencil"></use>
-    </svg>
+
   <div id="upload-container">
     <input type="file" id="image-input" accept="image/png">
     <button class="upload">Upload Image</button>
+    <svg id="brush" class="icon active">
+      <use xlink:href="#icon-Pencil"></use>
+  </svg>
   </div>
 
-  <div id="image-container"></div>
+  <div id="image-container">
+    <canvas class="canvas" width="700" height="700"></canvas>
+
 
     <h3></h3>
     <!-- <svg id="eraser" class="icon">
@@ -30,6 +31,7 @@
   <a id="download-button" href="#" download="transparent_image.png">Download Stamp</a>
 
   <script>
+    let drawing = false;
     const upload = document.querySelector(".upload");
     const downloadButton = document.getElementById('download-button');
 
@@ -66,12 +68,13 @@
        
        imageElement.onload=function(event){
         imageElement.classList.add('uploaded-image', 'filtered');
+        imageElement.width = 700;
+        imageElement.height = 700;
+        const canvas = document.querySelector("canvas");
+        canvas.width=700;
+        canvas.height=700;
         
-        const canvas = document.createElement("canvas");
-        canvas.width=imageElement.width;
-        canvas.height=imageElement.height;
-        
-        document.body.appendChild(canvas);
+        document.querySelector("#image-container").appendChild(canvas);
 let stamp=canvas.getBoundingClientRect();         
 const ctx = canvas.getContext("2d");
  ctx.filter = " brightness(100%) saturate(50%) sepia(100%) hue-rotate(312deg)";
@@ -79,7 +82,7 @@ const ctx = canvas.getContext("2d");
  initCanvas(canvas);
 
 document.getElementById("brush").addEventListener("click", () => {
-  switchTool("brush");
+  drawing = true;
 });
 
 // document.getElementById("eraser").addEventListener("click", () => {
@@ -105,7 +108,7 @@ downloadButton.addEventListener("click" , ()=> { downloadButton.href = canvas.to
 
         const container = document.getElementById('image-container');
         // container.innerHTML = ''; // Clear previous images
-        container.appendChild(imageElement);
+        // container.appendChild(imageElement);
 
         // Show download button
         
@@ -135,7 +138,7 @@ downloadButton.addEventListener("click" , ()=> { downloadButton.href = canvas.to
     }
 
     function draw(e) {
-      if (!isDrawing) return;
+      if (!isDrawing ||!drawing) return;
       ctx.beginPath();
       ctx.filter  = "none";
       ctx.moveTo(lastX, lastY);
