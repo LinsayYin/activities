@@ -1,7 +1,12 @@
   #upload-container {
-    margin-bottom: 10px;
-    margin-left: 900px;
-    margin-top: 50px;
+    margin-bottom: 2em;
+    margin-top: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #download-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,20 +22,22 @@
     border: none; 
     outline: none;
     height: 40px;
+    width: auto;
+    white-space: nowrap;
   }
 
   #image-input::file-selector-button {
     font-size: 20px;
     color: #ffffff;
     background-color: #c41212;
-    display: inline-block;
-    margin-bottom: 10px;
+    /* display: inline-block; */
+    /* margin-bottom: 10px; */
     padding: 10px 20px; 
     text-decoration: none;
     border-radius: 5px;
     border: none; 
     outline: none;
-    overflow: visible;
+    /* overflow: visible; */
     height: 40px;
   }
   
@@ -39,17 +46,18 @@
   #download-button {
     font-size: 20px;
     margin-top: 10px;
-    display: inline-block;
     padding: 10px 20px;
     background-color: #c41212;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
   }
+  
+  
   #image-container {
-    flex-wrap: wrap;
+    display: flex;
     justify-content: center;
-    gap: 10px;
+    align-items: center;
   }
   /* .uploaded-image {
     max-width: 200px;
@@ -70,18 +78,58 @@
     width: 70px;
     height: 70px;
     height: 40px;
-    margin-left: 20px;
+    margin-left: 6em;
 
   }
-
+h3{
+  font-size: 2vw;
+  color: #c41212;
+  font-family: Huiwen-mincho;
+  padding-left: 14vw;
+  text-decoration: underline;
+  text-decoration-color: #c41212;
+}
 canvas{
   border: 2px solid #9f1111;
+
 
 }
 @media (max-width: 700px) {
  canvas {
-    width: 100%;
+    width: 70%;
     
   }
+ h3 {
+  font-size: 5vw;
+  padding-left: 30vw;
 
+ }
+ #download-container{
+  padding-top: 1em;
+ }
+
+ #upload-container button,
+  #download-button {
+    font-size: 10px; 
+    padding: 5px 14px; 
+  }
+
+  #brush {
+    margin: 2px 40px;
+    margin-right: 65px;
+
+  }
+
+  #image-input::file-selector-button{
+    font-size: 10px;
+    height: 40px;
+  }
+
+  #upload-container input[type="file"] {
+    margin-left: 14vw; 
+  }
+  
+  #upload-container button.upload {
+    /* margin-right: 20vw; */
+  }
 }

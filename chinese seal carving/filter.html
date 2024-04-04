@@ -19,16 +19,19 @@
   </div>
 
   <div id="image-container">
-    <canvas class="canvas" width="700" height="700"></canvas>
+    <canvas class="canvas" width="580" height="580"></canvas>
 
 
-    <h3></h3>
+    
     <!-- <svg id="eraser" class="icon">
         <use xlink:href="#icon-eraser"></use>
     </svg> -->
 </div> 
 
+<div id="download-container">
   <a id="download-button" href="#" download="transparent_image.png">Download Stamp</a>
+  <a href="index.html"><h3>HOME</h3></a>
+</div>
 
   <script>
     let drawing = false;
@@ -68,11 +71,11 @@
        
        imageElement.onload=function(event){
         imageElement.classList.add('uploaded-image', 'filtered');
-        imageElement.width = 700;
-        imageElement.height = 700;
+        imageElement.width = 580;
+        imageElement.height = 580;
         const canvas = document.querySelector("canvas");
-        canvas.width=700;
-        canvas.height=700;
+        canvas.width=580;
+        canvas.height=580;
         
         document.querySelector("#image-container").appendChild(canvas);
 let stamp=canvas.getBoundingClientRect();         
@@ -127,7 +130,7 @@ downloadButton.addEventListener("click" , ()=> { downloadButton.href = canvas.to
       // document.body.appendChild(canvas);
       ctx = canvas.getContext("2d");
       ctx.strokeStyle = "#b10505"; // initial color
-      ctx.lineWidth = 5; // initial line width
+      ctx.lineWidth = 15; // initial line width
       ctx.lineJoin = "round";
       ctx.lineCap = "round";
     }

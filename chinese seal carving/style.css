@@ -92,10 +92,9 @@ p{
 }
 
 .stamp {
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  margin-top: 3em;
+  position: fixed;
+  right: 0;
+  bottom: 0;
 }
 
 .stamp img {
