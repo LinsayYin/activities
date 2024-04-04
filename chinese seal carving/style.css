@@ -118,6 +118,9 @@ h3 {
     
   }
   .stamp img {
-    max-width: 40%;
+    max-width: 20%;
+    position: fixed;
+    left: 10vw;
+    bottom: 25vw;
   }
 }
