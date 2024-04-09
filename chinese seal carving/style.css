@@ -1,10 +1,16 @@
 #image-container {
   position: relative;
   width: 100%;
-  height: 1000px;
+  height: 80vh;
   background-color: #ffffff;
   overflow: hidden;
   padding-top: 20px;
+}
+
+
+#upload-button:hover {
+  background-color: #c12525; 
+  color: #ffffff;
 }
 
 .uploaded-image {
@@ -14,21 +20,25 @@
   border-radius: 8px;
   position: absolute;
   cursor: pointer;
+  
 }
 
 #upload-button {
-  font-size: 18px;
+  font-size: 2vw;
   padding: 10px 20px;
   margin:0 auto ;
   display: flex;
   justify-content:  center;
   align-items: center;
   margin-top: 30px;
+  font-family: Huiwen-mincho;
+  color: #aa1515;
+  border: none;
+  border-radius: 5px;
+  background-color: #ffffff;
+  border: 2px solid #c12525;
 }
 
-#choose-file-input {
-  color: #C20909; 
-}
 
 .imagine img {
   margin-top: 50px;
@@ -52,19 +62,24 @@ h1 {
 }
 
 .custom-file-upload {
+  font-size: 2vw;
   display: inline-block;
-  background-color: #C20909; 
-  color: #fff;
-  border: none;
+  /* background-color: #C20909;  */
+  color: #aa1515;
+  border: 2px solid #c12525;
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
   margin-right: 120px;
+  font-family: Huiwen-mincho;
 }
 
 .custom-file-upload:hover {
-  background-color: #960000; 
+  background-color: #c12525;
+  color: #ffffff; 
 }
+
+
 .button-container{
   display: flex;
   justify-content:  center;
@@ -79,7 +94,7 @@ p{
   font-weight: 400;
   line-height: normal;
   padding-left: 4.5em;
-  padding-right: 4.5em;
+  padding-right: 6em;
 }
 .imagine {
   margin-top: 3em;
@@ -87,7 +102,7 @@ p{
 }
 
 .imagine img {
-  max-width: 100%;
+  max-width: 30%;
   height: auto;
 }
 
@@ -122,5 +137,9 @@ h3 {
     position: fixed;
     left: 10vw;
     bottom: 25vw;
+  }
+
+  #image-container{
+    width: 70%;
   }
 }
