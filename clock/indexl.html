@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stabilized Gaps in Expanding Rings</title>
+<style>
+    body, html { margin: 0; height: 100%; overflow: hidden; }
+    canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    let rings = [{radius: 10, segments: generateSegments(10), gap: 20}];
+    let lastUpdateTime = Date.now();
+    let addNewRingInterval = 5000;
+    let minBaseGap = 20; // Minimum gap between rings
+    let maxBaseGap = 40; // Maximum gap between rings
+
+    function generateSegments(radius) {
+        const segments = [];
+        const totalLength = 2 * Math.PI;
+        let currentAngle = 0;
+        const maxSegmentCount = Math.floor(4 + Math.random() * 5); // 4 to 8 segments
+        const minGap = totalLength * 0.01; // Minimum gap size
+        const maxGap = totalLength * 0.05; // Maximum gap size
+
+        while (currentAngle < totalLength) {
+            const gap = minGap + Math.random() * (maxGap - minGap);
+            const segmentLength = Math.random() * (totalLength / maxSegmentCount);
+            const startAngle = currentAngle + gap;
+            const endAngle = startAngle + segmentLength;
+            if (endAngle + minGap < totalLength) {
+                segments.push({start: startAngle, end: endAngle});
+                currentAngle = endAngle + gap;
+            } else {
+                // Ensure the last segment does not overflow the circle
+                segments.push({start: startAngle, end: totalLength});
+                break;
+            }
+        }
+
+        return segments;
+    }
+
+    function addNewRing() {
+        const baseGap = minBaseGap + Math.random() * (maxBaseGap - minBaseGap); // Randomize gap
+        const newRadius = rings[0].radius + baseGap;
+        rings.unshift({
+            radius: 0,
+            growthRate: 0.5,
+            segments: generateSegments(newRadius),
+            gap: baseGap
+        });
+    }
+
+    function updateRings(deltaTime) {
+        rings.forEach((ring, index) => {
+            let targetRadius = index === 0 ? 10 : rings[index - 1].radius + rings[index].gap;
+            if (ring.radius < targetRadius) {
+                ring.radius += ring.growthRate * deltaTime;
+                if (ring.radius > targetRadius) {
+                    ring.radius = targetRadius;
+                }
+            }
+        });
+    }
+
+    function drawRings() {
+        const now = Date.now();
+        const deltaTime = (now - lastUpdateTime) / 1000;
+        lastUpdateTime = now;
+
+        updateRings(deltaTime);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 0.5;  // Set line width to 0.5 pixels for finer lines
+        rings.forEach((ring) => {
+            ring.segments.forEach(segment => {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, ring.radius, segment.start, segment.end, false);
+                ctx.stroke();
+            });
+        });
+
+        requestAnimationFrame(drawRings);
+    }
+
+    addNewRing(); // Add initial ring
+    setInterval(addNewRing, addNewRingInterval);
+    requestAnimationFrame(drawRings);
+});
+</script>
+</body>
+</html>
