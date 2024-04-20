@@ -1,104 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Stabilized Gaps in Expanding Rings</title>
-<style>
-    body, html { margin: 0; height: 100%; overflow: hidden; }
-    canvas { display: block; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态圆形</title>
+    <style>
+        body, html { height: 100%; margin: 0; overflow: hidden; }
+        .circle {
+            position: absolute;
+            overflow: visible; /* 确保SVG不被切割 */
+        }
+    </style>
 </head>
 <body>
-<canvas id="canvas"></canvas>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+    <div id="container"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('container');
+            let baseYear = 2003; // 基础年份
+            let initialCircles = 0; // 初始圆的数量
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+            // 生成随机颜色
+            const getRandomColor = () => {
+                const opacity = Math.random() * 0.5 + 0.5; // 透明度从0.5到1.0
+                const red = Math.floor(Math.random() * 30) + 125; // Red from 125 to 155
+                const green = red - 40; // Green always less than red
+                const blue = red - 90; // Blue always less than green
+                return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
+            };
 
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    let rings = [{radius: 10, segments: generateSegments(10), gap: 20}];
-    let lastUpdateTime = Date.now();
-    let addNewRingInterval = 5000;
-    let minBaseGap = 20; // Minimum gap between rings
-    let maxBaseGap = 40; // Maximum gap between rings
+            // 创建一个包含扭曲线段的圆形
+            const createCircle = () => {
+                const size = Math.random() * 80 + 40; // 随机大小，40px到120px
+                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svg.setAttribute("width", size);
+                svg.setAttribute("height", size);
 
-    function generateSegments(radius) {
-        const segments = [];
-        const totalLength = 2 * Math.PI;
-        let currentAngle = 0;
-        const maxSegmentCount = Math.floor(4 + Math.random() * 5); // 4 to 8 segments
-        const minGap = totalLength * 0.01; // Minimum gap size
-        const maxGap = totalLength * 0.05; // Maximum gap size
-
-        while (currentAngle < totalLength) {
-            const gap = minGap + Math.random() * (maxGap - minGap);
-            const segmentLength = Math.random() * (totalLength / maxSegmentCount);
-            const startAngle = currentAngle + gap;
-            const endAngle = startAngle + segmentLength;
-            if (endAngle + minGap < totalLength) {
-                segments.push({start: startAngle, end: endAngle});
-                currentAngle = endAngle + gap;
-            } else {
-                // Ensure the last segment does not overflow the circle
-                segments.push({start: startAngle, end: totalLength});
-                break;
-            }
-        }
-
-        return segments;
-    }
-
-    function addNewRing() {
-        const baseGap = minBaseGap + Math.random() * (maxBaseGap - minBaseGap); // Randomize gap
-        const newRadius = rings[0].radius + baseGap;
-        rings.unshift({
-            radius: 0,
-            growthRate: 0.5,
-            segments: generateSegments(newRadius),
-            gap: baseGap
-        });
-    }
-
-    function updateRings(deltaTime) {
-        rings.forEach((ring, index) => {
-            let targetRadius = index === 0 ? 10 : rings[index - 1].radius + rings[index].gap;
-            if (ring.radius < targetRadius) {
-                ring.radius += ring.growthRate * deltaTime;
-                if (ring.radius > targetRadius) {
-                    ring.radius = targetRadius;
+                // 添加扭曲的线段
+                const segments = 3 + Math.floor(Math.random() * 5); // 3到7个扭曲的线段
+                for (let i = 0; i < segments; i++) {
+                    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    const d = generatePathData(size / 2, size / 2, size / 2 - 1, i, segments);
+                    path.setAttribute("d", d);
+                    path.setAttribute("stroke", getRandomColor());
+                    path.setAttribute("stroke-width", "2");
+                    path.setAttribute("fill", "none");
+                    svg.appendChild(path);
                 }
-            }
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'circle';
+                wrapper.style.left = `${Math.random() * (window.innerWidth - size)}px`;
+                wrapper.style.top = `${Math.random() * (window.innerHeight - size)}px`;
+                wrapper.appendChild(svg);
+                container.appendChild(wrapper);
+                moveCircle(wrapper);
+                return wrapper;
+            };
+
+            // 生成路径数据，模拟扭曲和断开
+            const generatePathData = (cx, cy, r, index, total) => {
+                const angle = 360 / total;
+                const startAngle = angle * index;
+                const endAngle = startAngle + angle;
+                const largeArc = Math.random() > 0.5 ? 1 : 0; // 随机选择大圆弧或小圆弧
+                const sweep = 1; // 总是顺时针
+                const startX = cx + r * Math.cos(startAngle * Math.PI / 180);
+                const startY = cy + r * Math.sin(startAngle * Math.PI / 180);
+                const endX = cx + r * Math.cos(endAngle * Math.PI / 180);
+                const endY = cy + r * Math.sin(endAngle * Math.PI / 180);
+                // 使用贝塞尔曲线平滑连接点
+                return `M${startX} ${startY} Q ${cx} ${cy}, ${endX} ${endY}`;
+            };
+
+            // 缓慢移动圆形
+            const moveCircle = (wrapper) => {
+                let dx = (Math.random() * 0.5 - 0.25); // 水平移动速度
+                let dy = (Math.random() * 0.5 - 0.25); // 垂直移动速度
+                const move = () => {
+                    let rect = wrapper.getBoundingClientRect();
+                    let newX = rect.left + dx;
+                    let newY = rect.top + dy;
+
+                    if (newX < 0 || newX + rect.width > window.innerWidth) {
+                        dx = -dx;
+                        newX = rect.left + dx;
+                    }
+                    if (newY < 0 || newY + rect.height > window.innerHeight) {
+                        dy = -dy;
+                        newY = rect.top + dy;
+                    }
+
+                    wrapper.style.left = `${newX}px`;
+                    wrapper.style.top = `${newY}px`;
+
+                    requestAnimationFrame(move);
+                };
+                requestAnimationFrame(move);
+            };
+
+            // 初始化所有圆
+            const initCircles = () => {
+                const count = getCircleCount();
+                for (let i = 0; i < count; i++) {
+                    createCircle(); // 初始随机大小圆
+                }
+            };
+
+            const getCircleCount = () => initialCircles + new Date().getFullYear() - baseYear;
+
+            initCircles();
         });
-    }
-
-    function drawRings() {
-        const now = Date.now();
-        const deltaTime = (now - lastUpdateTime) / 1000;
-        lastUpdateTime = now;
-
-        updateRings(deltaTime);
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.lineWidth = 0.5;  // Set line width to 0.5 pixels for finer lines
-        rings.forEach((ring) => {
-            ring.segments.forEach(segment => {
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, ring.radius, segment.start, segment.end, false);
-                ctx.stroke();
-            });
-        });
-
-        requestAnimationFrame(drawRings);
-    }
-
-    addNewRing(); // Add initial ring
-    setInterval(addNewRing, addNewRingInterval);
-    requestAnimationFrame(drawRings);
-});
-</script>
+    </script>
 </body>
 </html>
