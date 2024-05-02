@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="heading"> <h1>Tree rings</h1> <h1>Tree rings</h1> <h1>Tree rings</h1> </div>
+    <div id="container">
+      <div class="content">
+        <p>This website design is inspired by tree rings. There is a countdown up to 36 in the middle, decreasing 1 by every 5 seconds in the real time and adding a number on the circle outside when the countdown ends. The circle will up to 20 numbers in real time it is one hour.t</p>
+        <p>You can count the number of circles on the site to know what time it is in reality. The site also switches the background color with the New York sunrise and sunset times. During the daytime the background is white, at night the background will be black, you can determine whether it is AM or PM according to this.</p>
+        <p>The font of the circle will change depending on what day of the week it is. Below are all the fonts used on the site and their respective days of the week.</p>
+        <p>Monday ------ Inner <br>
+        Tuesday ------ Joti One <br>
+        Wednesday ------Kelly Slab <br>
+        Thursday ------Kaiti SC <br>
+        Friday ------ Koulen <br>
+        Saturday ------Abril Fatface <br>
+        Sunday ------ Kavoon</p>
+      </div>
+      <canvas id="myCanvas"></canvas>
+    </div>
+    <div class="heading"> <h1>Tree rings</h1> <h1>Tree rings</h1> <h1>Tree rings</h1> </div>
+    <script src="./options.js"></script>
+    <script>
+      // 拿到配置项 配置项详见：options.js
+      // const monthOptions = getMonthOptions();
+      const baseOptions = getBaseOptions();
+      // 初始化canvas并将所需参数暴露出来
+      const { canvas, ctx, centerX, centerY, angleStep } = initCanvas();
+      const backDom = document.querySelector("#myCanvas");
+
+      // 圆环
+      const rings = [];
+      // 中心文字
+      let centerText = "";
+
+      // 当前日期时间
+      let today,
+        currentMinutes,
+        currentHours,
+        currentDay,
+        currentMonth,
+        currentSeconds;
+
+      start();
+
+      // 定时器监听当前分钟数
+      setInterval(() => {
+        if (centerText !== getCenterText()) {
+          start();
+        }
+      }, 100);
+
+      // 启动函数
+      function start() {
+        console.log("start");
+        // 重置当前时间
+        resetCurrentDateTime();
+        // 初始化圆环
+        initRings();
+        // 重绘圆环
+        redrawRings();
+      }
+
+      // 初始化canvas
+      function initCanvas() {
+        const canvas = document.getElementById("myCanvas");
+        canvas.width = window.innerWidth * 0.8;
+        canvas.height = window.innerHeight *0.9;
+        const ctx = canvas.getContext("2d");
+        ctx.lineWidth = 0.5;
+
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        // 基本角度
+        const angleStep = (2 * Math.PI) / 20;
+
+        return { canvas, ctx, centerX, centerY, angleStep };
+      }
+
+      // 初始化圆环
+      function initRings() {
+        rings.length = 0;
+        centerText = getCenterText();
+        let startAngle = generateRandomNumber();
+        if (typeof baseOptions.firstRingStartAngle === "number") {
+          startAngle = baseOptions.firstRingStartAngle;
+        }
+        rings[0] = {
+          fontFamily: "Arial",
+          color: generateRandomColor(),
+          value: "",
+          size: currentMinutes / 3,
+          interval: baseOptions.firstRingRadius,
+          startAngle,
+          fontSize: baseOptions.firstRingFontSize,
+        };
+        for (let i = 1; i < currentHours; i++) {
+          const fontSize =
+            baseOptions.firstRingFontSize + (i + 1) ** baseOptions.textExponent;
+          rings.push({
+            fontFamily: "Arial",
+            color: generateRandomColor(),
+            value: "",
+            size: 20,
+            interval: 0 + fontSize,
+            startAngle: generateRandomNumber(),
+            fontSize,
+          });
+        }
+      }
+
+      // 绘制圆环中心文字
+      function drawCenterText() {
+        // 设置字体 文字对齐方式
+        ctx.fillStyle = baseOptions.centerTextColor;
+        ctx.font = "20px Arial";
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+        // 绘制
+        ctx.fillText(centerText, centerX, centerY);
+      }
+
+      // 获取中心文字
+      function getCenterText() {
+        const nowMins = getCurrentDateTime().minutes;
+        const nowSecs = getCurrentDateTime().seconds;
+        const secs = nowMins * 60 + nowSecs;
+        return 36 - Math.floor((secs % 180) / 5);
+      }
+
+      // 获取当时的时间 year, month, day, hours, minutes
+      function getCurrentDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1; // 月份是从 0 开始的，所以要加 1
+        const day = now.getDate();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        return {
+          year,
+          month,
+          day,
+          hours,
+          minutes,
+          seconds,
+        };
+      }
+
+      // 重绘圆环
+      async function redrawRings() {
+        // 清空画布
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // 请求
+        await setBG();
+        // 绘制中心文字
+        drawCenterText();
+        // 先将间距设为0 后续将各个圆环的间距累加，实现间距可控
+        let interval = 0;
+
+        for (let i = 0; i < rings.length; i++) {
+          const ring = rings[i];
+          ctx.font = ring.fontSize + "px Arial";
+          ctx.fillStyle = ring.color;
+          // 根据圆环当前小时数拿到小时数组 0 1 2 3...
+          const text = getRingTextArr(ring.size);
+
+          interval += ring.interval;
+          for (let j = 0; j < text.length; j++) {
+            const angle = j * angleStep + ring.startAngle;
+            const x = centerX + Math.cos(angle) * interval;
+            const y = centerY + Math.sin(angle) * interval;
+            ctx.save();
+            // 将文字平移
+            ctx.translate(x, y);
+            // 顺时针旋转角度
+            ctx.rotate(angle + Math.PI / 2);
+            // 绘制字体
+            ctx.fillText(text[j], 0, 0);
+            ctx.restore();
+          }
+        }
+      }
+
+      // 重置 变量 today, currentMinutes, currentHours, currentDay, currentMonth
+      function resetCurrentDateTime() {
+        today = new Date();
+        currentMinutes = getCurrentDateTime().minutes;
+        currentHours = getCurrentDateTime().hours;
+        currentDay = getCurrentDateTime().day;
+        currentMonth = getCurrentDateTime().month;
+        currentSeconds = getCurrentDateTime().seconds;
+      }
+
+      // 获取今天以及今天之前指定天数的日期
+      function getPastDays(size) {
+        const pastDays = [];
+
+        for (let i = 0; i < size; i++) {
+          const pastDate = new Date(today); // 创建一个新日期对象以免修改原日期
+          pastDate.setDate(today.getDate() - i); // 获取今天之前的日期
+          const month = pastDate.getMonth() + 1; // 获取月份
+          const day = pastDate.getDate(); // 获取日期
+          if (currentMonth === month) {
+            pastDays.push({
+              month: month,
+              day: day,
+            }); // 将月份和日期添加到数组中
+          }
+        }
+        return pastDays;
+      }
+
+      // 计算圆环上文字
+      function getRingTextArr(size) {
+        const RingTextArr = [];
+        for (let i = 1; i <= size; i++) {
+          RingTextArr.push(i);
+        }
+        return RingTextArr;
+      }
+
+      // 获得一个随机数【0 ~ 2*Math.PI】
+      function generateRandomNumber() {
+        return Math.random() * 2 * Math.PI;
+      }
+
+      // 获取一个随机颜色
+      function generateRandomColor() {
+        const r = Math.random().toString().slice(-6);
+        return "#" + r;
+      }
+
+      function setBG() {
+        // Coordinates for New York
+        const latitude = 40.71427;
+        const longitude = -74.00597;
+        const url = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`;
+
+        return new Promise((resolve, reject) => {
+          fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data.results);
+              let riseStamp = Math.floor(
+                new Date("2024.04.19 " + data.results.sunrise).getTime() / 1000
+              );
+              let setStamp = Math.floor(
+                new Date("2024.04.19 " + data.results.sunset).getTime() / 1000
+              );
+              console.log(riseStamp, setStamp);
+              let currentTime = Math.floor(Date.now() / 1000);
+              if (
+                currentTime % 86400 > riseStamp % 86400 &&
+                currentTime % 86400 < setStamp % 86400
+              ) {
+                // ctx.fillStyle = "white"; // 设置为你想要的背景颜色
+                // ctx.fillRect(0, 0, canvas.width, canvas.height); // 填充整个 Canvas 区域
+                backDom.style.backgroundColor = "white";
+              } else {
+                // ctx.fillStyle = "black"; // 设置为你想要的背景颜色
+                // ctx.fillRect(0, 0, canvas.width, canvas.height); // 填充整个 Canvas 区域
+                backDom.style.backgroundColor = "black";
+              }
+              // ctx.restore()
+              resolve();
+            })
+            .catch((err) => {
+              reject(err);
+              console.error(err);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
