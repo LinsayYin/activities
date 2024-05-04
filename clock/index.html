@@ -6,26 +6,42 @@
     <link rel="stylesheet" href="./style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Jaro:opsz@6..72&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&family=Joti+One&family=Kavoon&family=Kelly+Slab&family=Poetsen+One&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
   </head>
+
   <body>
-    <div class="heading"> <h1>Tree ring clock</h1> <h1>Tree ring clock</h1> <h1>Tree ring clock</h1> </div>
+    <div class="heading header">
+      <h1>Tree ring clock</h1>
+      <h1>Tree ring clock</h1>
+      <h1>Tree ring clock</h1>
+    </div>
     <div id="container">
       <div class="content">
-        <p>This website design is inspired by tree rings. There is a countdown up to 36 in the middle, decreasing 1 by every 5 seconds in the real time and adding a number on the circle outside when the countdown ends. The circle will up to 20 numbers in real time it is one hour.t</p>
-        <p>You can count the number of circles on the site to know what time it is in reality. The site also switches the background color with the New York sunrise and sunset times. During the daytime the background is white, at night the background will be black, you can determine whether it is AM or PM according to this.</p>
-        <p>The font of the circle will change depending on what day of the week it is. Below are all the fonts used on the site and their respective days of the week.</p>
-        <p>Monday ------ Inner <br>
-        Tuesday ------ Joti One <br>
-        Wednesday ------Kelly Slab <br>
-        Thursday ------Kaiti SC <br>
-        Friday ------ Koulen <br>
-        Saturday ------Abril Fatface <br>
-        Sunday ------ Kavoon</p>
+        <p>
+          36 unit = 3 minutes <br />= 1 number in the ring <br /><br />(5
+          seconds/ unit) <br />
+          <br />
+          1 ring = 1 -20 number <br />
+          = 1 hour in reality <br /><br />
+          24 rings= 1 day
+        </p>
+        <ul class="week">
+          <li>Monday ------ <span>Poetsen One</span></li>
+          <li>Tuesday ------ <span>Ubuntu Sans</span></li>
+          <li>Wednesday ------ <span>Kelly Slab</span></li>
+          <li>Thursday ------ <span>Joti One</span></li>
+          <li>Friday ------ <span>Jaro</span></li>
+          <li>Saturday ------ <span>Abril Fatface</span></li>
+          <li>Sunday ------ <span>Kavoon</span></li>
+        </ul>
       </div>
       <canvas id="myCanvas"></canvas>
     </div>
-    <div class="heading"> <h1>Tree ring clock</h1> <h1>Tree ring clock</h1> <h1>Tree ring clock</h1> </div>
+    <div class="heading footer">
+      <h1>Tree ring clock</h1>
+      <h1>Tree ring clock</h1>
+      <h1>Tree ring clock</h1>
+    </div>
     <script src="./options.js"></script>
     <script>
       // 拿到配置项 配置项详见：options.js
@@ -33,7 +49,10 @@
       const baseOptions = getBaseOptions();
       // 初始化canvas并将所需参数暴露出来
       const { canvas, ctx, centerX, centerY, angleStep } = initCanvas();
-      const backDom = document.querySelector("#myCanvas");
+      const backDom = document.querySelector("body");
+      const pDOMs = document.querySelectorAll("p");
+      const ul = document.querySelector(".week");
+      let fontColor = "black";
 
       // 圆环
       const rings = [];
@@ -48,18 +67,19 @@
         currentMonth,
         currentSeconds;
 
-      start();
+      setBG().then(() => {
+        start();
 
-      // 定时器监听当前分钟数
-      setInterval(() => {
-        if (centerText !== getCenterText()) {
-          start();
-        }
-      }, 100);
+        // 定时器监听当前分钟数
+        setInterval(() => {
+          if (centerText !== getCenterText()) {
+            start();
+          }
+        }, 100);
+      });
 
       // 启动函数
       function start() {
-        console.log("start");
         // 重置当前时间
         resetCurrentDateTime();
         // 初始化圆环
@@ -72,7 +92,12 @@
       function initCanvas() {
         const canvas = document.getElementById("myCanvas");
         canvas.width = window.innerWidth * 0.8;
-        canvas.height = window.innerHeight *0.9;
+        canvas.height = window.innerHeight * 0.9;
+        if (window.innerWidth < 600) {
+          const cavasWidth = window.innerWidth * 0.8 * 2.3;
+          canvas.width = cavasWidth;
+          canvas.height = cavasWidth;
+        }
         const ctx = canvas.getContext("2d");
         ctx.lineWidth = 0.5;
 
@@ -81,7 +106,13 @@
         // 基本角度
         const angleStep = (2 * Math.PI) / 20;
 
-        return { canvas, ctx, centerX, centerY, angleStep };
+        return {
+          canvas,
+          ctx,
+          centerX,
+          centerY,
+          angleStep,
+        };
       }
 
       // 初始化圆环
@@ -92,21 +123,14 @@
         if (typeof baseOptions.firstRingStartAngle === "number") {
           startAngle = baseOptions.firstRingStartAngle;
         }
-        rings[0] = {
-          fontFamily: "Arial",
-          color: generateRandomColor(),
-          value: "",
-          size: currentMinutes / 3,
-          interval: baseOptions.firstRingRadius,
-          startAngle,
-          fontSize: baseOptions.firstRingFontSize,
-        };
-        for (let i = 1; i < currentHours; i++) {
+
+        for (let i = 0; i <= currentHours; i++) {
           const fontSize =
             baseOptions.firstRingFontSize + (i + 1) ** baseOptions.textExponent;
           rings.push({
             fontFamily: "Arial",
-            color: generateRandomColor(),
+            // color: generateRandomColor(),
+            color: fontColor,
             value: "",
             size: 20,
             interval: 0 + fontSize,
@@ -114,12 +138,23 @@
             fontSize,
           });
         }
+        rings[0] = {
+          fontFamily: "Arial",
+          // color: generateRandomColor(),
+          color: fontColor,
+          value: "",
+          size: currentMinutes / 3,
+          interval: baseOptions.firstRingRadius,
+          startAngle,
+          fontSize: baseOptions.firstRingFontSize,
+        };
       }
 
       // 绘制圆环中心文字
       function drawCenterText() {
         // 设置字体 文字对齐方式
-        ctx.fillStyle = baseOptions.centerTextColor;
+        // ctx.fillStyle = baseOptions.centerTextColor;
+        ctx.fillStyle = fontColor;
         ctx.font = "20px Arial";
         ctx.textBaseline = "middle";
         ctx.textAlign = "center";
@@ -159,7 +194,7 @@
         // 清空画布
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         // 请求
-        await setBG();
+        // await setBG();
         // 绘制中心文字
         drawCenterText();
         // 先将间距设为0 后续将各个圆环的间距累加，实现间距可控
@@ -248,14 +283,12 @@
           fetch(url)
             .then((response) => response.json())
             .then((data) => {
-              console.log(data.results);
               let riseStamp = Math.floor(
                 new Date("2024.04.19 " + data.results.sunrise).getTime() / 1000
               );
               let setStamp = Math.floor(
                 new Date("2024.04.19 " + data.results.sunset).getTime() / 1000
               );
-              console.log(riseStamp, setStamp);
               let currentTime = Math.floor(Date.now() / 1000);
               if (
                 currentTime % 86400 > riseStamp % 86400 &&
@@ -264,11 +297,24 @@
                 // ctx.fillStyle = "white"; // 设置为你想要的背景颜色
                 // ctx.fillRect(0, 0, canvas.width, canvas.height); // 填充整个 Canvas 区域
                 backDom.style.backgroundColor = "white";
+                backDom.style.color = "black";
+                fontColor = "black";
+                pDOMs.forEach((item) => {
+                  item.style.borderColor = "black";
+                });
+                ul.style.borderColor = "black";
               } else {
                 // ctx.fillStyle = "black"; // 设置为你想要的背景颜色
                 // ctx.fillRect(0, 0, canvas.width, canvas.height); // 填充整个 Canvas 区域
                 backDom.style.backgroundColor = "black";
+                backDom.style.color = "white";
+                fontColor = "white";
+                pDOMs.forEach((item) => {
+                  item.style.borderColor = "white";
+                });
+                ul.style.borderColor = "white";
               }
+
               // ctx.restore()
               resolve();
             })

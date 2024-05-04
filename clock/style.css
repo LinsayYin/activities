@@ -20,21 +20,56 @@ html {
   width: 100%;
   height: 100%;
 }
-p{
+p {
   border-radius: 30px;
-  border: 1px solid black; padding: 15px;;
+  border: 1px solid black;
+  padding: 15px;
   font-family: "Josefin Slab";
   font-size: 15px;
 }
-h1{
+.week {
+  border-radius: 30px;
+  border: 1px solid black;
+  padding: 15px;
+  font-family: "Josefin Slab";
+  font-size: 15px;
+  /* margin: 0; */
+  /* padding: 0; */
+}
+.week li {
+  list-style: none;
+}
+.week li:nth-of-type(1) span{
+ font-family: poetsen one;
+}
+.week li:nth-of-type(2) span{
+  font-family: Ubuntu Sans Mono;
+}
+.week li:nth-of-type(3) span{
+  font-family: Kelly Slab;
+}
+.week li:nth-of-type(4) span{
+  font-family: Joti One;
+}
+.week li:nth-of-type(5) span{
+  font-family: Jaro;
+}
+.week li:nth-of-type(6) span{
+  font-family: Abril Fatface;
+}
+.week li:nth-of-type(7) span{
+  font-family: Kavoon;
+}
+
+h1 {
   font-family: "Josefin Slab";
   font-size: 1em;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+}
 
-} 
-.heading{
+.heading {
   display: flex;
   justify-content: space-between;
   padding-left: 35px;
@@ -42,15 +77,35 @@ h1{
 }
 @media (max-width: 600px) {
   .content {
-    width: 100%; 
-    padding: 10px; 
+    width: 100%;
+    padding: 10px;
+    /* height: auto; */
   }
   .heading {
     padding-left: 10px;
     padding-right: 10px;
   }
-  p, h1 {
+  p,
+  h1 {
     font-size: 0.5em;
+  }
+
+  body{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  #container{
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+  }
+  #myCanvas{
+    width: 100vw;
+    height: 100vw;
+    flex-shrink: 1;
   }
 }
 

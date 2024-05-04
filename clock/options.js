@@ -5,7 +5,7 @@ function getBaseOptions() {
     firstRingStartAngle: 0, // 第一个（最内侧）圆环的起始角度(flase:随机  【0 ~ 2*Math.PI】)
     centerTextColor: 'green', // 中心字体颜色
     // 圆环字体指数(计算圆环外外侧的字体大小指数值) 10 + index(rings数组下标) ** textExponent
-    textExponent: 1.2,
+    textExponent: 0,
   }
 }
 
