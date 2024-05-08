@@ -6,9 +6,10 @@ html {
 }
 #container {
   width: 100%;
-  height: 90%;
+  height: 100%;
   box-sizing: border-box;
   display: flex;
+  align-items: center;
 }
 .content {
   width: 20%;
@@ -17,7 +18,7 @@ html {
   box-sizing: border-box;
 }
 #myCanvas {
-  width: 100%;
+  width: 80%;
   height: 100%;
 }
 p {
@@ -67,6 +68,7 @@ h1 {
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  padding-left: 50px;
 }
 
 .heading {
@@ -79,15 +81,20 @@ h1 {
   .content {
     width: 100%;
     padding: 10px;
+    padding-top: 0;
     /* height: auto; */
   }
   .heading {
     padding-left: 10px;
     padding-right: 10px;
   }
-  p,
   h1 {
-    font-size: 0.8em;
+    font-size: 0.9em;
+    padding-left: 20px;
+
+  }
+  p,ul,li{
+    font-size: 12px;
   }
 
   body{
@@ -103,6 +110,7 @@ h1 {
     justify-content: center;
   }
   #myCanvas{
+    padding-top: 150px;
     width: 100vw;
     height: 100vw;
     flex-shrink: 1;

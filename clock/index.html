@@ -10,20 +10,23 @@
   </head>
 
   <body>
-    <div class="heading header">
+    <!-- <div class="heading header">
       <h1>Tree ring clock</h1>
       <h1>Tree ring clock</h1>
       <h1>Tree ring clock</h1>
-    </div>
+    </div> -->
     <div id="container">
       <div class="content">
+        <h1>Tree ring clock</h1>
+        <p>The website is inspired by tree rings and have its own way to divide time. It doesn’t use standard time, and use units that can be converted to real time. <br> <br>Maximum 24 rings, each ring represent one hour in real time and consist of 20 numbers. The countdown unit in the middle will decrease one unit every 5 seconds in the real time. To the end, will be 3 minutes in total, so it is from 36 to 1. </p>
         <p>
           36 unit = 3 minutes <br />= 1 number in the ring <br /><br />(5
           seconds/ unit) <br />
           <br />
           1 ring = 1 -20 number <br />
           = 1 hour in reality <br /><br />
-          24 rings= 1 day
+          24 rings= 1 day <br><br>
+          The background color switch base on the New York sunrise and sunset times. 
         </p>
         <ul class="week">
           <li>Monday ------ <span>Poetsen One</span></li>
@@ -37,11 +40,11 @@
       </div>
       <canvas id="myCanvas"></canvas>
     </div>
-    <div class="heading footer">
+    <!-- <div class="heading footer">
       <h1>Tree ring clock</h1>
       <h1>Tree ring clock</h1>
       <h1>Tree ring clock</h1>
-    </div>
+    </div> -->
     <script src="./options.js"></script>
     <script>
       // 拿到配置项 配置项详见：options.js
@@ -92,7 +95,7 @@
       function initCanvas() {
         const canvas = document.getElementById("myCanvas");
         canvas.width = window.innerWidth * 0.8;
-        canvas.height = window.innerHeight * 0.9;
+        canvas.height = window.innerHeight * 1;
         if (window.innerWidth < 600) {
           const cavasWidth = window.innerWidth * 0.8 * 2.3;
           canvas.width = cavasWidth;
