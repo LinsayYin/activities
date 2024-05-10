@@ -4,9 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Jaro:opsz@6..72&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&family=Joti+One&family=Kavoon&family=Kelly+Slab&family=Poetsen+One&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Jaro:opsz@6..72&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&family=Joti+One&family=Kavoon&family=Kelly+Slab&family=Poetsen+One&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
@@ -18,15 +21,24 @@
     <div id="container">
       <div class="content">
         <h1>Tree ring clock</h1>
-        <p>The website is inspired by tree rings and have its own way to divide time. It doesn’t use standard time, and use units that can be converted to real time. <br> <br>Maximum 24 rings, each ring represent one hour in real time and consist of 20 numbers. The countdown unit in the middle will decrease one unit every 5 seconds in the real time. To the end, will be 3 minutes in total, so it is from 36 to 1. </p>
+        <p>
+          The website is inspired by tree rings and have its own way to divide
+          time. It doesn’t use standard time, and use units that can be
+          converted to real time. <br />
+          <br />Maximum 24 rings, each ring represent one hour in real time and
+          consist of 20 numbers. The countdown unit in the middle will decrease
+          one unit every 5 seconds in the real time. To the end, will be 3
+          minutes in total, so it is from 36 to 1.
+        </p>
         <p>
           36 unit = 3 minutes <br />= 1 number in the ring <br /><br />(5
           seconds/ unit) <br />
           <br />
           1 ring = 1 -20 number <br />
           = 1 hour in reality <br /><br />
-          24 rings= 1 day <br><br>
-          The background color switch base on the New York sunrise and sunset times. 
+          24 rings= 1 day <br /><br />
+          The background color switch base on the New York sunrise and sunset
+          times.
         </p>
         <ul class="week">
           <li>Monday ------ <span>Poetsen One</span></li>
@@ -126,17 +138,17 @@
         if (typeof baseOptions.firstRingStartAngle === "number") {
           startAngle = baseOptions.firstRingStartAngle;
         }
-        const dayOfWeek = getCurrentDateTime().dayOfWeek; 
+        const dayOfWeek = getCurrentDateTime().dayOfWeek;
         const fontFamilies = [
-        "Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro,Abril Fatface,Kavoon",
-        "Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro,Abril Fatface,Kavoon,Poetsen One",
-        "Kelly Slab,Joti One,Jaro,Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono",
-        "Joti One,Jaro,Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab",
-        "Jaro,Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One",
-        "Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro",
-        "Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro,Abril Fatface",
-       ];
-       const fontFamily = fontFamilies[dayOfWeek];
+          "Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro,Abril Fatface,Kavoon",
+          "Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro,Abril Fatface,Kavoon,Poetsen One",
+          "Kelly Slab,Joti One,Jaro,Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono",
+          "Joti One,Jaro,Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab",
+          "Jaro,Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One",
+          "Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro",
+          "Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro,Abril Fatface",
+        ];
+        const fontFamily = fontFamilies[dayOfWeek];
 
         for (let i = 0; i <= currentHours; i++) {
           const fontSize =
@@ -193,7 +205,7 @@
         const hours = now.getHours();
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
-        const dayOfWeek = now.getDay(); 
+        const dayOfWeek = now.getDay();
         return {
           year,
           month,
@@ -218,7 +230,7 @@
 
         for (let i = 0; i < rings.length; i++) {
           const ring = rings[i];
-          ctx.font = ring.fontSize + "px "+ ring.fontFamily;
+          ctx.font = ring.fontSize + "px " + ring.fontFamily;
           ctx.fillStyle = ring.color;
           // 根据圆环当前小时数拿到小时数组 0 1 2 3...
           const text = getRingTextArr(ring.size);
@@ -300,16 +312,18 @@
             .then((response) => response.json())
             .then((data) => {
               let riseStamp = Math.floor(
-                new Date("2024.04.19 " + data.results.sunrise).getTime() / 1000
+                new Date(
+                  data.results.date + " " + data.results.sunrise
+                ).getTime() / 1000
               );
               let setStamp = Math.floor(
-                new Date("2024.04.19 " + data.results.sunset).getTime() / 1000
+                new Date(
+                  data.results.date + " " + data.results.sunset
+                ).getTime() / 1000
               );
               let currentTime = Math.floor(Date.now() / 1000);
-              if (
-                currentTime % 86400 > riseStamp % 86400 &&
-                currentTime % 86400 < setStamp % 86400
-              ) {
+              console.log(currentTime, riseStamp, setStamp);
+              if (currentTime > riseStamp && currentTime < setStamp) {
                 // ctx.fillStyle = "white"; // 设置为你想要的背景颜色
                 // ctx.fillRect(0, 0, canvas.width, canvas.height); // 填充整个 Canvas 区域
                 backDom.style.backgroundColor = "white";
