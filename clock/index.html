@@ -123,12 +123,23 @@
         if (typeof baseOptions.firstRingStartAngle === "number") {
           startAngle = baseOptions.firstRingStartAngle;
         }
+        const dayOfWeek = getCurrentDateTime().dayOfWeek; 
+        const fontFamilies = [
+        "Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro,Abril Fatface,Kavoon",
+        "Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro,Abril Fatface,Kavoon,Poetsen One",
+        "Kelly Slab,Joti One,Jaro,Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono",
+        "Joti One,Jaro,Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab",
+        "Jaro,Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One",
+        "Abril Fatface,Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro",
+        "Kavoon,Poetsen One,Ubuntu Sans Mono,Kelly Slab,Joti One,Jaro,Abril Fatface",
+       ];
+       const fontFamily = fontFamilies[dayOfWeek];
 
         for (let i = 0; i <= currentHours; i++) {
           const fontSize =
             baseOptions.firstRingFontSize + (i + 1) ** baseOptions.textExponent;
           rings.push({
-            fontFamily: "Arial",
+            fontFamily: fontFamily,
             // color: generateRandomColor(),
             color: fontColor,
             value: "",
@@ -139,7 +150,7 @@
           });
         }
         rings[0] = {
-          fontFamily: "Arial",
+          fontFamily: fontFamily,
           // color: generateRandomColor(),
           color: fontColor,
           value: "",
@@ -179,6 +190,7 @@
         const hours = now.getHours();
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
+        const dayOfWeek = now.getDay(); 
         return {
           year,
           month,
@@ -186,6 +198,7 @@
           hours,
           minutes,
           seconds,
+          dayOfWeek,
         };
       }
 
@@ -202,7 +215,7 @@
 
         for (let i = 0; i < rings.length; i++) {
           const ring = rings[i];
-          ctx.font = ring.fontSize + "px Arial";
+          ctx.font = ring.fontSize + "px "+ ring.fontFamily;
           ctx.fillStyle = ring.color;
           // 根据圆环当前小时数拿到小时数组 0 1 2 3...
           const text = getRingTextArr(ring.size);
